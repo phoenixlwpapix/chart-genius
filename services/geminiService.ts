@@ -5,9 +5,16 @@ export class GeminiService {
   private ai: GoogleGenAI;
 
   constructor() {
-    const apiKey = process.env.API_KEY || '';
+    // Safely retrieve API key, handling environments where process might be undefined
+    let apiKey = '';
+    try {
+        apiKey = process.env.API_KEY || '';
+    } catch (e) {
+        console.warn("process.env is not accessible");
+    }
+
     if (!apiKey) {
-      console.warn("API Key is missing!");
+      console.warn("API Key is missing! Ensure process.env.API_KEY is set.");
     }
     this.ai = new GoogleGenAI({ apiKey });
   }
