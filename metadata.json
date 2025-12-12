@@ -1,0 +1,5 @@
+{
+  "name": "ChartGenius AI",
+  "description": "An intelligent text-to-chart generator powered by Gemini. Simply paste your text, report, or data, and instantly generate interactive, customizable visualizations (Bar, Line, Pie, Area) that can be exported as images or standalone HTML files.",
+  "requestFramePermissions": []
+}
