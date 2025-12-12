@@ -5,10 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChartGenius AI - 智能图表生成</title>
     <script>
-      // Polyfill for process.env to prevent "process is not defined" crash in browser
+      // 1. Polyfill for process.env
       if (typeof process === 'undefined') {
         window.process = { env: {} };
       }
+
+      // 2. Global Error Handler for debugging blank screens
+      window.onerror = function(message, source, lineno, colno, error) {
+        const root = document.getElementById('root');
+        if (root && root.innerHTML === '') { // Only show if app hasn't mounted
+            const errorDiv = document.createElement('div');
+            errorDiv.style.color = '#ef4444';
+            errorDiv.style.backgroundColor = '#1a1a1a';
+            errorDiv.style.padding = '20px';
+            errorDiv.style.fontFamily = 'monospace';
+            errorDiv.innerHTML = `
+                <h3>⚠️ Application Error</h3>
+                <p>${message}</p>
+                <p><small>${source}:${lineno}:${colno}</small></p>
+            `;
+            document.body.prepend(errorDiv);
+        }
+        console.error('Global error:', error);
+      };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -44,6 +63,7 @@
 {
   "imports": {
     "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "react-dom/client": "https://esm.sh/react-dom@^19.2.3/client",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
@@ -57,5 +77,7 @@
 </head>
   <body>
     <div id="root"></div>
+    <!-- CRITICAL FIX: Load the entry point -->
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>
